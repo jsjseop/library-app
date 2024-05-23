@@ -7,8 +7,7 @@ import com.group.libraryapp.domain.book.Book;
 import com.group.libraryapp.domain.book.BookRepository;
 import com.group.libraryapp.domain.user.User;
 import com.group.libraryapp.domain.user.UserRepository;
-import com.group.libraryapp.domain.user.loanHistory.UserLoanHistory;
-import com.group.libraryapp.domain.user.loanHistory.UserLoanHistoryReporitory;
+import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository;
 import com.group.libraryapp.dto.book.BookCreateRequest;
 import com.group.libraryapp.dto.book.BookLoanRequest;
 import com.group.libraryapp.dto.book.BookReturnRequest;
@@ -17,13 +16,13 @@ import com.group.libraryapp.dto.book.BookReturnRequest;
 public class BookService {
 
 	private final BookRepository bookRepository;
-	private final UserLoanHistoryReporitory userLoanHistoryReporitory;
+	private final UserLoanHistoryRepository userLoanHistoryRepository;
 	private final UserRepository userRepository;
 
-	public BookService(BookRepository bookRepository, UserLoanHistoryReporitory userLoanHistoryReporitory,
+	public BookService(BookRepository bookRepository, UserLoanHistoryRepository userLoanHistoryRepository,
 		UserRepository userRepository) {
 		this.bookRepository = bookRepository;
-		this.userLoanHistoryReporitory = userLoanHistoryReporitory;
+		this.userLoanHistoryRepository = userLoanHistoryRepository;
 		this.userRepository = userRepository;
 	}
 
@@ -37,7 +36,7 @@ public class BookService {
 		Book book = bookRepository.findByName(request.getBookName())
 			.orElseThrow(IllegalArgumentException::new);
 
-		if (userLoanHistoryReporitory.existsByBookNameAndIsReturn(book.getName(), false)) {
+		if (userLoanHistoryRepository.existsByBookNameAndIsReturn(book.getName(), false)) {
 			throw new IllegalArgumentException();
 		}
 
